@@ -1,18 +1,13 @@
 <template>
   <div class="flip-card">
-    <div class="flip-card__top flip-card--part">
-      <!-- <div class="flip-card__top__backface">
-        <p class="flip-card__top__text-bottom">
-          07
-        </p>
-      </div> -->
+    <div class="flip-card__top flip-card--part" @animationend="handleAnimationEnd($event)">
       <p class="flip-card__top__text-top">
-        07
+        {{ initialValue }}
       </p>
     </div>
     <div class="flip-card__bottom flip-card--part">
       <p class="flip-card__bottom__text-bottom">
-        08
+        {{ initialValue }}
       </p>
     </div>
     <p class="flip-card__description">
@@ -23,7 +18,45 @@
 
 <script lang="ts">
 export default {
-
+  emits: ['timeout'],
+  props: {
+    cycles: {
+      type: Number,
+      required: true,
+    },
+    initialValue: {
+      type: Number,
+      required: false,
+      default: 60,
+    },
+    loop: {
+      type: Boolean,
+      required: false,
+      default: true,
+    }
+  },
+  data() {
+    return {
+      cyclesLeft: this.cycles,
+    }
+  },
+  computed: {
+    resetCycles(cycles: number): number {
+      if (cycles <= 0) {
+        return this.cycles;
+      }
+      else {
+        return cycles;
+      }
+    },
+  },
+  methods: {
+    handleAnimationEnd(e: AnimationEvent) {
+      this.cyclesLeft -= 1;
+      
+      return e;
+    }
+  }
 }
 </script>
 
@@ -81,8 +114,6 @@ export default {
     
     font-size: .375rem;;
   }
-
-  
 }
 
 @keyframes card-flip {
