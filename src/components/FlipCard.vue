@@ -1,13 +1,22 @@
 <template>
-  <div class="flip-card">
-    <div class="flip-card__top flip-card--part" @animationend="handleAnimationEnd($event)">
-      <p class="flip-card__top__text-top">
-        {{ initialValue }}
-      </p>
+  <div class="flip-card" >
+    <div class="flip-card__top">
+      <div class="flip-card__top__back flip-card--part">
+        <p class="flip-card__text-top">
+          {{ timeLeftNext }}
+        </p>
+      </div>
+      <div class="flip-card__top__front flip-card--part"
+        @animationend="handleAnimationEnd($event.target)"
+      >
+        <p class="flip-card__text-top">
+          {{ timeLeft }}
+        </p>
+      </div>
     </div>
     <div class="flip-card__bottom flip-card--part">
-      <p class="flip-card__bottom__text-bottom">
-        {{ initialValue }}
+      <p class="flip-card__text-bottom">
+        {{ timeLeft }}
       </p>
     </div>
     <p class="flip-card__description">
@@ -24,11 +33,6 @@ export default {
       type: Number,
       required: true,
     },
-    initialValue: {
-      type: Number,
-      required: false,
-      default: 60,
-    },
     loop: {
       type: Boolean,
       required: false,
@@ -38,22 +42,47 @@ export default {
   data() {
     return {
       cyclesLeft: this.cycles,
+      doAnimation: true,
     }
   },
   computed: {
-    resetCycles(cycles: number): number {
-      if (cycles <= 0) {
-        return this.cycles;
+    timeLeft() {
+      const msgCycles = this.cyclesLeft.toString();
+      const msgCyclesLen = this.cyclesLeft.toString().length;
+
+      let msg = msgCycles;
+      if (msgCyclesLen <= 1) {
+        msg = '0'.concat(msgCycles);
       }
-      else {
-        return cycles;
-      }
+      return msg;
     },
+    timeLeftNext() {
+      const msgCycles = (this.cyclesLeft - 1).toString();
+
+      let msg = msgCycles;
+      if (this.cyclesLeft <= 1) {
+        const maxCycles = this.cycles.toString();
+        msg = maxCycles;
+      }
+
+      if (msg.length <= 1) {
+        msg = '0'.concat(msg);
+      }
+
+      return msg;
+    }
   },
   methods: {
-    handleAnimationEnd(e: AnimationEvent) {
+    handleAnimationEnd(e: EventTarget | null) {
       this.cyclesLeft -= 1;
-      
+      if (this.cyclesLeft <= 0) {
+        this.$emit('timeout', this.cyclesLeft);
+
+        if (this.loop) {
+          this.cyclesLeft = this.cycles;
+        }
+      }
+      this.doAnimation = false;
       return e;
     }
   }
@@ -77,8 +106,6 @@ export default {
   transform-style: preserve-3d;
 
   &--part {
-    padding: 0 .75rem;
-
     border-radius: .25rem;
 
     overflow: hidden;
@@ -88,41 +115,59 @@ export default {
     position: relative;
     transform-origin: bottom;
 
-    background-color: $very-dark-blue2;
+    width: 100%;
+    height: 100%;
 
-    animation: card-flip 3s ease-in infinite;
+    &__front, &__back {
+      position: absolute;
+      transform-origin: bottom;
+      width: 100%;
 
-    &__text-top {
-      transform: translateY(50%);
-      
-      color: darken($soft-red, $amount: 3%);
+      background-color: darken($very-dark-blue, $amount: 3%);
     }
+
   }
 
   &__bottom {
     background-color: $very-dark-blue;
 
     box-shadow: 0 0.5rem 1rem $very-dark-blue;
+  }
 
-    &__text-bottom {
-      transform: translateY(-50%);
-    }
+  &__text-top {
+    transform: translateY(50%);
+
+    color: darken($soft-red, $amount: 3%);
+  }
+
+  &__text-bottom {
+    transform: translateY(-50%);
+
+    color: $soft-red;
   }
 
   &__description {
     color: $grayish-blue;
-    
+
     font-size: .375rem;;
   }
 }
 
-@keyframes card-flip {
+.flip-card.animate {
+  // animation: flip-down .5s ease-in backwards 1;
+  &__top__front {
+    animation: flip-down .5s ease-in backwards 1;
+  }
+}
+
+@keyframes flip-down {
   0% {
     transform: rotateX(0deg);
   }
 
   100% {
-    transform: rotateX(-180deg);
+    transform: rotateX(180deg);
+    background-color: $very-dark-blue;
   }
 }
 </style>
