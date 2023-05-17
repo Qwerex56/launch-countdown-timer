@@ -20,14 +20,16 @@
       </p>
     </div>
     <p class="flip-card__description">
-      months
+      <slot>
+
+      </slot>
     </p>
   </div>
 </template>
 
 <script lang="ts">
 export default {
-  emits: ['timeout'],
+  emits: ['timeout', 'cycleEnd'],
   props: {
     cycles: {
       type: Number,
@@ -42,7 +44,6 @@ export default {
   data() {
     return {
       cyclesLeft: this.cycles,
-      doAnimation: true,
     }
   },
   computed: {
@@ -75,14 +76,19 @@ export default {
   methods: {
     handleAnimationEnd(e: EventTarget | null) {
       this.cyclesLeft -= 1;
+      
       if (this.cyclesLeft <= 0) {
-        this.$emit('timeout', this.cyclesLeft);
-
+        this.$emit('cycleEnd', this.cyclesLeft);
+        this.cyclesLeft = 0;
+        
         if (this.loop) {
           this.cyclesLeft = this.cycles;
         }
       }
-      this.doAnimation = false;
+      
+      this.$emit('timeout', {
+        cyclesLeft: this.cyclesLeft,
+      });
       return e;
     }
   }
@@ -102,8 +108,8 @@ export default {
 
   text-align: center;
 
-  perspective: 28.125rem;
-  transform-style: preserve-3d;
+  perspective: 15.625rem;
+  transform-style:preserve-3d;
 
   &--part {
     border-radius: .25rem;
@@ -151,11 +157,8 @@ export default {
 
     font-size: .375rem;;
   }
-}
 
-.flip-card.animate {
-  // animation: flip-down .5s ease-in backwards 1;
-  &__top__front {
+  &.animate &__top__front{
     animation: flip-down .5s ease-in backwards 1;
   }
 }

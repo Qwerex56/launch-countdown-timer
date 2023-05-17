@@ -9,13 +9,11 @@
 
 <script lang="ts">
 import MediaButton from './components/MediaButton.vue';
-import FlipCard from './components/FlipCard.vue';
 import LaunchTimerWidget from './widgets/LaunchTimerWidget.vue';
 
 export default {
   components: {
     MediaButton,
-    FlipCard,
     LaunchTimerWidget,
 },
 }
@@ -23,7 +21,7 @@ export default {
 
 <style scoped>
 div {
-
+  margin: 10px;
   align-items: center;
 }
 </style>
