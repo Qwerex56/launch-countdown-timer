@@ -55,12 +55,18 @@ export default {
       if (msgCyclesLen <= 1) {
         msg = '0'.concat(msgCycles);
       }
+
+      if (this.cyclesLeft <= 0) {
+        msg = '00';
+      }
+
       return msg;
     },
     timeLeftNext() {
       const msgCycles = (this.cyclesLeft - 1).toString();
 
       let msg = msgCycles;
+
       if (this.cyclesLeft <= 1) {
         const maxCycles = this.cycles.toString();
         msg = maxCycles;
@@ -76,6 +82,10 @@ export default {
   methods: {
     handleAnimationEnd(e: EventTarget | null) {
       this.cyclesLeft -= 1;
+
+      this.$emit('timeout', {
+        cyclesLeft: this.cyclesLeft,
+      });
       
       if (this.cyclesLeft <= 0) {
         this.$emit('cycleEnd', this.cyclesLeft);
@@ -86,9 +96,6 @@ export default {
         }
       }
       
-      this.$emit('timeout', {
-        cyclesLeft: this.cyclesLeft,
-      });
       return e;
     }
   }

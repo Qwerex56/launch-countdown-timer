@@ -20,10 +20,11 @@
         @timeout="(data) => {
           flipCard.animate = !flipCard.animate;
           flipCard.cyclesLeft = data.cyclesLeft;
+          flipCard.loop = doLoop(flipCard.id);
         }"
 
         :cycles="flipCard.cycles"
-        :loop="doLoop(flipCard.id)"
+        :loop="flipCard.loop"
       >
         {{ flipCard.description }}
       </FlipCard>
@@ -47,7 +48,7 @@ export default {
         {
           id: 0,
           idNext: 1,
-          cycles: 5,
+          cycles: 2,
           cyclesLeft: 60,
           loop: true,
           animate: false,
@@ -88,6 +89,10 @@ export default {
     //TODO:
     // do wymiany ta nazwa
     callNext(id: number) {
+      if (id >= this.flipCards.length) {
+        return;
+      }
+
       this.flipCards[id].animate = true;
     },
     // to tez ladnie nazwij
@@ -97,6 +102,10 @@ export default {
       }, /* dodaj stałą dla delay*/ 1000)
     },
     doLoop(id: number) {
+      if (id + 1 >= this.flipCards.length) {
+        return false;
+      }
+      
       const nextCard = this.flipCards[id + 1];
       return nextCard ? (nextCard.cyclesLeft > 0) : false;
     },
