@@ -83,9 +83,6 @@ export default {
     handleAnimationEnd(e: EventTarget | null) {
       this.cyclesLeft -= 1;
 
-      this.$emit('timeout', {
-        cyclesLeft: this.cyclesLeft,
-      });
       
       if (this.cyclesLeft <= 0) {
         this.$emit('cycleEnd', this.cyclesLeft);
@@ -95,6 +92,10 @@ export default {
           this.cyclesLeft = this.cycles;
         }
       }
+
+      this.$emit('timeout', {
+        cyclesLeft: this.cyclesLeft,
+      });
       
       return e;
     }
