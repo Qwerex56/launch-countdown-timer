@@ -35,6 +35,10 @@ export default {
       type: Number,
       required: true,
     },
+    initialValue: {
+      type: Number,
+      required: false,
+    },
     loop: {
       type: Boolean,
       required: false,
@@ -45,6 +49,9 @@ export default {
     return {
       cyclesLeft: this.cycles,
     }
+  },
+  mounted() {
+    this.cyclesLeft = this.initialValue ? this.initialValue : this.cycles;
   },
   computed: {
     timeLeft() {
@@ -106,18 +113,17 @@ export default {
 <style scoped lang="scss">
 .flip-card {
   display: grid;
-  grid-template: repeat(3, 1fr) / repeat(1, 1fr);
-  align-self: center;
+  grid-template: repeat(3, 2.1875rem [row-start]) / repeat(1, 4.375rem [col-start]);
 
   color: $soft-red;
 
   font-family: $red-hat-text;
-  font-size: 2rem;
+  font-size: 1.6563rem;
 
   text-align: center;
 
   perspective: 15.625rem;
-  transform-style:preserve-3d;
+  transform-style: preserve-3d;
 
   &--part {
     border-radius: .25rem;
@@ -161,9 +167,12 @@ export default {
   }
 
   &__description {
+    align-self: center;
+    
     color: $grayish-blue;
 
-    font-size: .375rem;;
+    font-size: .5rem;
+    letter-spacing: .125rem;
   }
 
   &.animate &__top__front{
@@ -179,6 +188,40 @@ export default {
   100% {
     transform: rotateX(180deg);
     background-color: $very-dark-blue;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .flip-card {
+    grid-template: repeat(3, 3.4375rem [row-start]) / repeat(1, 6.875rem [col-start]);
+
+    font-size: 2.5938rem;
+
+    &--part {
+      border-radius: .3125rem;
+    }
+
+    &__description {
+      font-size: .7rem;
+      letter-spacing: .1875rem;
+    }
+  }
+}
+
+@media  screen and (min-width: 1440px) {
+  .flip-card {
+    grid-template: repeat(3, 4.375rem [row-start]) / repeat(1, 9.375rem [col-start]);
+
+    font-size: 3.3438rem;
+
+    &--part {
+      border-radius: .375rem;
+    }
+
+    &__description {
+      font-size: .8rem;
+      letter-spacing: .25rem;
+    }
   }
 }
 </style>
