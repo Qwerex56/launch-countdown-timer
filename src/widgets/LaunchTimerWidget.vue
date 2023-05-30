@@ -21,7 +21,7 @@
           flipCard.loop = shouldLoop(flipCard.id);
         }"
 
-        :class="{ 'animate': flipCard.animate}"
+        :animate="flipCard.animate"
         :cycles="flipCard.cycles"
         :initial-value="flipCard.initialValue"
         :loop="flipCard.loop"
@@ -82,10 +82,10 @@ export default {
         {
           id: 1,
           cycles: 60,
-          initialValue: 41,
+          initialValue: 3,
           cyclesLeft: 41,
           loop: true,
-          animate: false,
+          animate: true,
           description: 'SECONDS',
         },
       ],
