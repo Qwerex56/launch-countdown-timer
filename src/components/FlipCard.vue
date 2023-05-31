@@ -1,28 +1,32 @@
 <template>
-  <div class="flip-card" >
-    <div class="flip-card__top">
-      <div class="flip-card__top__back flip-card--part">
-        <p class="flip-card__text-top">
-          {{ timeLeftNext }}
-        </p>
-      </div>
-      <div class="flip-card__top__front flip-card--part"
-        @animationend="handleAnimationEnd($event.target)"
-      >
-        <p class="flip-card__text-top">
-          {{ timeLeft }}
-        </p>
-      </div>
+  <div class="card">
+    <div class="card__next-card--top card--part">
+      <p class="card__text--top">
+        {{ timeLeftNext }}
+      </p>
     </div>
-    <div class="flip-card__bottom flip-card--part">
-      <p class="flip-card__text-bottom">
+    <div class="card__next-card--bottom card--part" :class="{ 'animate' : animate }">
+      <p class="card__text__flip--bottom">
+        {{ timeLeftNext }}
+      </p>
+    </div>
+    <div class="card__top-card card--part" 
+      :class="{ 'animate' : animate }" 
+      @animationstart="handleAnimationStart($event.target)"
+      @animationend="handleAnimationEnd($event.target)" >
+      <p class="card__text__flip--top">
         {{ timeLeft }}
       </p>
     </div>
-    <p class="flip-card__description">
-      <slot>
-
-      </slot>
+    <div class="card__bottom card--part">
+      <p class="card__text--bottom">
+        {{ timeLeft }}
+      </p>
+    </div>
+    <p class="card__description">
+        <slot>
+          date
+        </slot>
     </p>
   </div>
 </template>
@@ -43,6 +47,10 @@ export default {
       type: Boolean,
       required: false,
       default: true,
+    },
+    animate: {
+      type: Boolean,
+      default: false,
     }
   },
   data() {
@@ -89,12 +97,8 @@ export default {
   methods: {
     handleAnimationEnd(e: EventTarget | null) {
       this.cyclesLeft -= 1;
-
       
       if (this.cyclesLeft <= 0) {
-        this.$emit('cycleEnd', this.cyclesLeft);
-        this.cyclesLeft = 0;
-        
         if (this.loop) {
           this.cyclesLeft = this.cycles;
         }
@@ -105,122 +109,232 @@ export default {
       });
       
       return e;
-    }
-  }
+    },
+    handleAnimationStart(e: EventTarget | null) {
+      if (this.cyclesLeft <= 1) {
+        this.$emit('cycleEnd', this.cyclesLeft);
+      }
+
+      return e;
+    },
+  },
+
 }
 </script>
 
 <style scoped lang="scss">
-.flip-card {
-  display: grid;
-  grid-template: repeat(3, 2.1875rem [row-start]) / repeat(1, 4.375rem [col-start]);
+$animation-lenght: .7s;
 
-  color: $soft-red;
+.card {
+  display: flex;
+  flex-direction: column;
 
-  font-family: $red-hat-text;
-  font-size: 1.6563rem;
+  position: relative;
 
-  text-align: center;
-
-  perspective: 15.625rem;
   transform-style: preserve-3d;
+  perspective: 350px;
 
-  &--part {
-    border-radius: .25rem;
-
-    overflow: hidden;
+  &__next-card--top {
+    background-color: darken($very-dark-blue, $amount: 3%);
+    color: darken($soft-red, $amount: 3%);
   }
 
-  &__top {
-    position: relative;
+  &__next-card--bottom {
+    position: absolute;
     transform-origin: bottom;
+    visibility: hidden;
+    top: 0;
 
     width: 100%;
-    height: 100%;
 
-    &__front, &__back {
-      position: absolute;
-      transform-origin: bottom;
-      width: 100%;
-
-      background-color: darken($very-dark-blue, $amount: 3%);
+    background-color: darken($very-dark-blue, $amount: 3%);
+    
+    &.animate {
+      animation: flip-back $animation-lenght linear 1;
     }
+  }
 
+  &__top-card {
+    position: absolute;
+    transform-origin: bottom;
+    backface-visibility: hidden;
+    top: 0;
+
+    width: 100%;
+  
+    background-color: darken($very-dark-blue, $amount: 3%);
+    color: darken($soft-red, $amount: 3%);
+
+    &.animate {
+      animation: flip-front $animation-lenght linear 1;
+    }
   }
 
   &__bottom {
     background-color: $very-dark-blue;
 
-    box-shadow: 0 0.5rem 1rem $very-dark-blue;
-  }
-
-  &__text-top {
-    transform: translateY(50%);
-
-    color: darken($soft-red, $amount: 3%);
-  }
-
-  &__text-bottom {
-    transform: translateY(-50%);
-
-    color: $soft-red;
+    box-shadow: 0rem .625rem 1.25rem $very-dark-blue2;
   }
 
   &__description {
-    align-self: center;
-    
+    margin-top: .875rem;
     color: $grayish-blue;
 
-    font-size: .5rem;
-    letter-spacing: .125rem;
+    font-family: $red-hat-text;
+    font-size: .375rem;
+    text-transform: capitalize;
+    text-align: center;
   }
 
-  &.animate &__top__front{
-    animation: flip-down .5s ease-in backwards 1;
+  &__text {
+    &--top {
+      transform: translateY(31%);
+
+      color: darken($soft-red, $amount: 3%);
+
+    }
+
+    &--bottom {
+      transform: translateY(-50%);
+    }
+
+    &__flip {
+      &--top {
+        transform: translateY(31%);
+
+        color: darken($soft-red, $amount: 3%);
+      }
+
+      &--bottom {
+        transform: rotateX(180deg) translateY(-31%);
+      }
+    }
+  }
+
+  &--part {
+    height: 2.1875rem;
+
+    border-radius: .25rem;
+
+    color: $soft-red;
+
+    overflow: hidden;
+
+    font-family: $red-hat-text;
+    font-size: 2rem;
+    font-weight: 700;
+
+    text-align: center;
   }
 }
 
-@keyframes flip-down {
-  0% {
-    transform: rotateX(0deg);
+@keyframes flip-front {
+  50% {
+    background-color: darken($very-dark-blue, $amount: 4%);
+    color: darken($soft-red, $amount: 4%);
   }
 
   100% {
-    transform: rotateX(180deg);
+    background-color: darken($very-dark-blue, $amount: 6%);
+    color: darken($soft-red, $amount: 6%);
+    
+    transform: rotateX(-180deg);
+  }
+}
+
+@keyframes flip-back {
+  50% {
+    visibility: hidden;
+  }
+
+  100% {
     background-color: $very-dark-blue;
+
+    visibility: visible;
+    transform: rotateX(-180deg);
   }
 }
 
 @media screen and (min-width: 768px) {
-  .flip-card {
-    grid-template: repeat(3, 3.4375rem [row-start]) / repeat(1, 6.875rem [col-start]);
-
-    font-size: 2.5938rem;
-
+  .card {
     &--part {
       border-radius: .3125rem;
+
+      font-size: 3rem;
     }
 
     &__description {
-      font-size: .7rem;
-      letter-spacing: .1875rem;
+      font-size: .5rem;
+    }
+
+    &__text {
+      &--top {
+        transform: translateY(32%);
+
+        color: darken($soft-red, $amount: 3%);
+      }
+
+      &--bottom {
+        transform: translateY(-50%);
+      }
+
+      &__flip {
+        &--top {
+          transform: translateY(32%);
+
+          color: darken($soft-red, $amount: 3%);
+        }
+
+        &--bottom {
+          transform: rotateX(180deg) translateY(-32%);
+        }
+      }
+    }
+
+    &--part {
+      height: 3.25rem;
     }
   }
 }
 
-@media  screen and (min-width: 1440px) {
-  .flip-card {
-    grid-template: repeat(3, 4.375rem [row-start]) / repeat(1, 9.375rem [col-start]);
-
-    font-size: 3.3438rem;
-
+@media screen and (min-width: 1440px) {
+  .card {
     &--part {
       border-radius: .375rem;
+
+      font-size: 4rem;
     }
 
     &__description {
-      font-size: .8rem;
-      letter-spacing: .25rem;
+      font-size: .625rem;
+    }
+
+    &__text {
+      &--top {
+        transform: translateY(33%);
+
+        color: darken($soft-red, $amount: 3%);
+      }
+
+      &--bottom {
+        transform: translateY(-50%);
+      }
+
+      &__flip {
+        &--top {
+          transform: translateY(33%);
+
+          color: darken($soft-red, $amount: 3%);
+        }
+
+        &--bottom {
+          transform: rotateX(180deg) translateY(-33%);
+        }
+      }
+    }
+
+    &--part {
+      height: 4.375rem;
     }
   }
 }

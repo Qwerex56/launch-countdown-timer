@@ -21,7 +21,7 @@
           flipCard.loop = shouldLoop(flipCard.id);
         }"
 
-        :class="{ 'animate': flipCard.animate}"
+        :animate="flipCard.animate"
         :cycles="flipCard.cycles"
         :initial-value="flipCard.initialValue"
         :loop="flipCard.loop"
@@ -57,46 +57,50 @@ export default {
           cycles: 30,
           initialValue: 8,
           cyclesLeft: 8,
-          loop: true,
+          loop: false,
           animate: false,
           description: 'DAYS',
         },
         {
           id: 3,
-          cycles: 24,
-          initialValue: 23,
-          cyclesLeft: 23,
+          cycles: 23,
+          initialValue: 21,
+          cyclesLeft: 21,
           loop: true,
           animate: false,
           description: 'HOURS',
         },
         {
           id: 2,
-          cycles: 60,
-          initialValue: 55,
-          cyclesLeft: 55,
+          cycles: 59,
+          initialValue: 48,
+          cyclesLeft: 48,
           loop: true,
           animate: false,
           description: 'MINUTES',
         },
         {
           id: 1,
-          cycles: 60,
-          initialValue: 41,
-          cyclesLeft: 41,
+          cycles: 59,
+          initialValue: 23,
+          cyclesLeft: 23,
           loop: true,
-          animate: false,
+          animate: true,
           description: 'SECONDS',
         },
       ],
     }
   },
   methods: {
-    //TODO:
-    // do wymiany ta nazwa
     startLaunchTimer() {
       setInterval(() => {
-        this.flipCards[3].animate = true;
+        var card = this.flipCards[3];
+        if (card.cyclesLeft > 0) {
+          card.animate = true;
+        }
+        else {
+          card.animate = false;
+        }
       }, this.inetrvalTime);
     },
     callNext(id: number) {
