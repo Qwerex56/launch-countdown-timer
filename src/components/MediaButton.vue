@@ -3,17 +3,14 @@
     class="media-icon"
     :href="mediaLink"
   >
-    <img
-      class="media-icon__media-image" 
-      :src="icoImgSrc"
-      alt="mIco"
-    >
+    <font-awesome-icon
+      class="media-icon__fa-svg" 
+      :icon="['fab', faIco]"
+    />
   </a>
 </template>
 
 <script lang="ts">
-import icoDefault from '@/images/icon-facebook.svg';
-
 export default {
   props: {
     mediaLink: {
@@ -21,9 +18,10 @@ export default {
       required: false,
       default: () => '#',
     },
-    icoImgSrc: {
+    faIco: {
       type: String,
-      default: () => icoDefault,
+      required: false,
+      default: () => 'square-js'
     }
   },
 }
@@ -31,9 +29,15 @@ export default {
 
 <style lang="scss">
 .media-icon {
-  
-  &__media-image {
+  color: $grayish-blue;
 
+  &__fa-svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    
+    &:hover {
+      color: $soft-red;
+    }
   }
 }
 </style>
