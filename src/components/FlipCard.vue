@@ -135,7 +135,7 @@ $animation-lenght: .7s;
   perspective: 350px;
 
   &__next-card--top {
-    background-color: darken($very-dark-blue, $amount: 3%);
+    background-color: darken($dark-dasaturated-blue, $amount: 3%);
     color: darken($soft-red, $amount: 3%);
   }
 
@@ -147,7 +147,7 @@ $animation-lenght: .7s;
 
     width: 100%;
 
-    background-color: darken($very-dark-blue, $amount: 3%);
+    background-color: darken($dark-dasaturated-blue, $amount: 3%);
     
     &.animate {
       animation: flip-back $animation-lenght linear 1;
@@ -162,7 +162,7 @@ $animation-lenght: .7s;
 
     width: 100%;
   
-    background-color: darken($very-dark-blue, $amount: 3%);
+    background-color: darken($dark-dasaturated-blue, $amount: 3%);
     color: darken($soft-red, $amount: 3%);
 
     &.animate {
@@ -171,7 +171,7 @@ $animation-lenght: .7s;
   }
 
   &__bottom {
-    background-color: $very-dark-blue;
+    background-color: $dark-dasaturated-blue;
 
     box-shadow: 0rem .625rem 1.25rem $very-dark-blue2;
   }
@@ -230,12 +230,12 @@ $animation-lenght: .7s;
 
 @keyframes flip-front {
   50% {
-    background-color: darken($very-dark-blue, $amount: 4%);
+    background-color: darken($dark-dasaturated-blue, $amount: 4%);
     color: darken($soft-red, $amount: 4%);
   }
 
   100% {
-    background-color: darken($very-dark-blue, $amount: 6%);
+    background-color: darken($dark-dasaturated-blue, $amount: 6%);
     color: darken($soft-red, $amount: 6%);
     
     transform: rotateX(-180deg);
@@ -248,7 +248,7 @@ $animation-lenght: .7s;
   }
 
   100% {
-    background-color: $very-dark-blue;
+    background-color: $dark-dasaturated-blue;
 
     visibility: visible;
     transform: rotateX(-180deg);
@@ -258,6 +258,8 @@ $animation-lenght: .7s;
 @media screen and (min-width: 768px) {
   .card {
     &--part {
+      height: 3.25rem;
+
       border-radius: .3125rem;
 
       font-size: 3rem;
@@ -270,8 +272,6 @@ $animation-lenght: .7s;
     &__text {
       &--top {
         transform: translateY(32%);
-
-        color: darken($soft-red, $amount: 3%);
       }
 
       &--bottom {
@@ -281,8 +281,6 @@ $animation-lenght: .7s;
       &__flip {
         &--top {
           transform: translateY(32%);
-
-          color: darken($soft-red, $amount: 3%);
         }
 
         &--bottom {
@@ -290,16 +288,14 @@ $animation-lenght: .7s;
         }
       }
     }
-
-    &--part {
-      height: 3.25rem;
-    }
   }
 }
 
 @media screen and (min-width: 1440px) {
   .card {
     &--part {
+      height: 4.375rem;
+
       border-radius: .375rem;
 
       font-size: 4rem;
@@ -312,8 +308,6 @@ $animation-lenght: .7s;
     &__text {
       &--top {
         transform: translateY(33%);
-
-        color: darken($soft-red, $amount: 3%);
       }
 
       &--bottom {
@@ -323,18 +317,12 @@ $animation-lenght: .7s;
       &__flip {
         &--top {
           transform: translateY(33%);
-
-          color: darken($soft-red, $amount: 3%);
         }
 
         &--bottom {
           transform: rotateX(180deg) translateY(-33%);
         }
       }
-    }
-
-    &--part {
-      height: 4.375rem;
     }
   }
 }
