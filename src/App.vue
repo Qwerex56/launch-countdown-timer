@@ -1,8 +1,6 @@
 <template>
   <div class="launch-app">
-    <LaunchTimerWidget class="launch-app__timer">
-      WE'RE LAUNCHING SOON
-    </LaunchTimerWidget>
+    <LaunchTimerWidget class="launch-app__timer"> WE'RE LAUNCHING SOON </LaunchTimerWidget>
     <MediaBar class="launch-app__media-bar"/>
   </div>
 </template>
@@ -34,7 +32,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  background-color: $dark-dasaturated-blue;
+  background-color: $very-dark-blue;
   background-image: url('@/images/pattern-hills.svg'), url('@/images/bg-stars.svg');
   background-repeat: no-repeat;
   background-position: bottom;
