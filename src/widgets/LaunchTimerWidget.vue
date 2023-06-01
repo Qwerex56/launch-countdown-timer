@@ -1,9 +1,7 @@
 <template>
   <div class="flip-card-timer" >
     <h1 class="flip-card-timer__title">
-      <slot>
-        Lorem ipsum dolor sit amet.
-      </slot>
+      <slot>Lorem ipsum dolor sit amet.</slot>
     </h1>
 
     <div class="flip-card-timer__container">
@@ -25,9 +23,7 @@
         :cycles="flipCard.cycles"
         :initial-value="flipCard.initialValue"
         :loop="flipCard.loop"
-      >
-        {{ flipCard.description }}
-      </FlipCard>
+      >{{ flipCard.description }}</FlipCard>
     </div>
   </div>
 </template>

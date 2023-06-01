@@ -14,19 +14,13 @@
       :class="{ 'animate' : animate }" 
       @animationstart="handleAnimationStart($event.target)"
       @animationend="handleAnimationEnd($event.target)" >
-      <p class="card__text__flip--top">
-        {{ timeLeft }}
-      </p>
+      <p class="card__text__flip--top">{{ timeLeft }}</p>
     </div>
     <div class="card__bottom card--part">
-      <p class="card__text--bottom">
-        {{ timeLeft }}
-      </p>
+      <p class="card__text--bottom">{{ timeLeft }}</p>
     </div>
     <p class="card__description">
-        <slot>
-          date
-        </slot>
+        <slot>date</slot>
     </p>
   </div>
 </template>
@@ -135,7 +129,7 @@ $animation-lenght: .7s;
   perspective: 350px;
 
   &__next-card--top {
-    background-color: darken($dark-dasaturated-blue, $amount: 3%);
+    background-color: darken($dark-dasaturated-blue, $amount: 5%);
     color: darken($soft-red, $amount: 3%);
   }
 
@@ -147,7 +141,7 @@ $animation-lenght: .7s;
 
     width: 100%;
 
-    background-color: darken($dark-dasaturated-blue, $amount: 3%);
+    background-color: darken($dark-dasaturated-blue, $amount: 5%);
     
     &.animate {
       animation: flip-back $animation-lenght linear 1;
@@ -162,7 +156,7 @@ $animation-lenght: .7s;
 
     width: 100%;
   
-    background-color: darken($dark-dasaturated-blue, $amount: 3%);
+    background-color: darken($dark-dasaturated-blue, $amount: 5%);
     color: darken($soft-red, $amount: 3%);
 
     &.animate {
@@ -230,12 +224,12 @@ $animation-lenght: .7s;
 
 @keyframes flip-front {
   50% {
-    background-color: darken($dark-dasaturated-blue, $amount: 4%);
+    background-color: darken($dark-dasaturated-blue, $amount: 6%);
     color: darken($soft-red, $amount: 4%);
   }
 
   100% {
-    background-color: darken($dark-dasaturated-blue, $amount: 6%);
+    background-color: darken($dark-dasaturated-blue, $amount: 8%);
     color: darken($soft-red, $amount: 6%);
     
     transform: rotateX(-180deg);
